@@ -1,0 +1,12 @@
+*.pyc
+*.csv
+*.json
+*.sh
+*.html
+
+conf
+venv/
+.cache/
+.idea/
+htmlcov/
+.coverage
