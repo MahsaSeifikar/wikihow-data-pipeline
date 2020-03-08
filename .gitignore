@@ -10,3 +10,4 @@ venv/
 .idea/
 htmlcov/
 .coverage
+data/
