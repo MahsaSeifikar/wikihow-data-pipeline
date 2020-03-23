@@ -9,5 +9,6 @@ The most important parts of this pipeline are as follows:
 
 ## WikiHow Crawler
  To extract raw data day to day run the following command. 
+ 
  `scrapy runspider src/data/wikihow_scraper.py
 `
