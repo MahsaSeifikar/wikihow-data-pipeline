@@ -4,7 +4,7 @@ import scrapy
 
 
 class WikiHowSpider(scrapy.Spider):
-    name = 'wikihow_search'
+    name = 'wikihow_trend_detection'
     main_url = 'https://www.wikihow.com'
     start_urls = [
         main_url + '/Main-Page',
@@ -25,7 +25,7 @@ class WikiHowSpider(scrapy.Spider):
         title = response.xpath('//title/text()').extract_first()
         path = os.path.join(*[os.getcwd(),
                               'data/raw',
-                              'wikihow-%s' %
+                              'trend-%s' %
                               datetime.datetime.now().strftime("%Y-%m-%d")])
 
         if not os.path.exists(path):
