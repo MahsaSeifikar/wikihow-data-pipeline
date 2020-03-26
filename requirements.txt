@@ -1,4 +1,4 @@
+click
 scrapy
-pyspark
 pytest
-pandas
+beautifulsoup4
