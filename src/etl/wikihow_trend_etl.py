@@ -62,12 +62,31 @@ def extract(data_path):
 
 
 def transform(df):
-    print('transform')
+    """ Clean raw data_frame by the following steps:
+        1. Removing space characters
+        2. Fill nan value
+        3. Specify column types
+
+    Arg:
+        df: A raw dataframe
+
+    Return:
+        A clean dataframe
+    """
+    df = df.fillna(0)
+    numerical_columns = ['n_views', 'n_votes', 'mean_votes']
+    df[numerical_columns] = df[numerical_columns].replace(',', '')
+    df['date_published'] = pd.to_datetime(df['date_published'], format='%Y-%m-%d')
+    df['date_modified'] = pd.to_datetime(df['date_modified'], format='%Y-%m-%d')
+    df['description'] = df['description'].replace(r'\n\r', ' ')
+    df['steps'] = df['steps'].replace(r'\n\r', ' ')
+
     return df
 
 
-def load(df):
+def load(df, data_path):
     print('load')
+    df.to_csv(data_path)
 
 
 @click.command()
@@ -95,8 +114,9 @@ def main(project_name, start_date, end_date):
 
         df = extract(os.path.join(data_path,
                                   start_date.strftime('%Y-%m-%d')))
-        print(df['n_votes'])
-        # df = transform(df)
+        df = transform(df)
+        print(df.dtypes)
+
         # load(df)
         break
         with open('config/conf_%s' % project_name, 'a') as f:
