@@ -1,9 +1,10 @@
 import datetime
 import json
 import os
+
 import click
-import pandas as pd
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 def extract(data_path):
@@ -41,10 +42,12 @@ def extract(data_path):
             print(soup.title.text)
             for tag in soup.find_all('div', {'class': 'sp_text'}):
                 if 'Views:' in str(tag):
-                    df.loc[index, 'n_views'] = tag.find('span', {'class': 'sp_text_data'}).text
+                    df.loc[index, 'n_views'] = tag. \
+                        find('span', {'class': 'sp_text_data'}).text
                     break
 
-            for tag in soup.find_all('script', {'type': "application/ld+json"}):
+            for tag in soup.find_all('script',
+                                     {'type': "application/ld+json"}):
                 tag = tag.text
                 if '"step":' in tag:
                     json_obj = json.loads(tag)
@@ -53,8 +56,10 @@ def extract(data_path):
                     df.loc[index, 'date_modified'] = json_obj['dateModified']
                     df.loc[index, 'description'] = json_obj['description']
                     if 'aggregateRating' in json_obj.keys():
-                        df.loc[index, 'n_votes'] = json_obj['aggregateRating']['ratingCount']
-                        df.loc[index, 'mean_votes'] = json_obj['aggregateRating']['ratingValue']
+                        df.loc[index, 'n_votes'] = \
+                            json_obj['aggregateRating']['ratingCount']
+                        df.loc[index, 'mean_votes'] = \
+                            json_obj['aggregateRating']['ratingValue']
 
         index += 1
 
@@ -76,17 +81,31 @@ def transform(df):
     df = df.fillna(0)
     numerical_columns = ['n_views', 'n_votes', 'mean_votes']
     df[numerical_columns] = df[numerical_columns].replace(',', '')
-    df['date_published'] = pd.to_datetime(df['date_published'], format='%Y-%m-%d')
-    df['date_modified'] = pd.to_datetime(df['date_modified'], format='%Y-%m-%d')
+    df['date_published'] = pd.to_datetime(df['date_published'],
+                                          format='%Y-%m-%d')
+    df['date_modified'] = pd.to_datetime(df['date_modified'],
+                                         format='%Y-%m-%d')
     df['description'] = df['description'].replace(r'\n\r', ' ')
     df['steps'] = df['steps'].replace(r'\n\r', ' ')
 
     return df
 
 
-def load(df, data_path):
+def load(df, data_path, filename):
+    """ Save dataframe to a csv file in processed folder
+
+    Args:
+        df: a clean dataframe.
+        data_path: path to raw folder.
+        filename: A string that is a date for saving data.
+    Return:
+        Nothing!
+    """
     print('load')
-    df.to_csv(data_path)
+    data_path = data_path.replace('raw', 'processed')
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
+    df.to_csv(os.path.join(data_path, filename + '.csv'))
 
 
 @click.command()
@@ -99,30 +118,29 @@ def main(project_name, start_date, end_date):
                                project_name])
     with open('config/conf_%s' % project_name, 'r') as f:
         file_names = f.read().split()
+
     # if file_names is empty run etl from the first available date!
     if not file_names:
-        start_date = datetime.datetime.strptime(os.listdir(data_path)[0],
-                                                '%Y-%m-%d')
+        current_date = datetime.datetime.strptime(os.listdir(data_path)[0],
+                                                  '%Y-%m-%d')
     else:
-        start_date = datetime.datetime.strptime(file_names[-1],
-                                                '%Y-%m-%d') \
-                     + datetime.timedelta(days=1)
+        current_date = datetime.datetime.strptime(file_names[-1],
+                                                  '%Y-%m-%d') \
+                       + datetime.timedelta(days=1)
 
     while os.path.exists(os.path.join(data_path,
-                                      start_date.strftime('%Y-%m-%d'))):
-        print(start_date)
-
+                                      current_date.strftime('%Y-%m-%d'))):
         df = extract(os.path.join(data_path,
-                                  start_date.strftime('%Y-%m-%d')))
+                                  current_date.strftime('%Y-%m-%d')))
         df = transform(df)
-        print(df.dtypes)
+        load(df, data_path, current_date.strftime('%Y-%m-%d'))
 
-        # load(df)
-        break
+        # Save the current day as a processed day.
         with open('config/conf_%s' % project_name, 'a') as f:
-            f.write(start_date.strftime('%Y-%m-%d'))
+            f.write(current_date.strftime('%Y-%m-%d'))
             f.write('\n')
-        start_date += datetime.timedelta(days=1)
+
+        current_date += datetime.timedelta(days=1)
 
 
 if __name__ == '__main__':
