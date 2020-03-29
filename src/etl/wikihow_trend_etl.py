@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 
-def extract(data_path):
+def extract(abs_path, dir_name):
     """ Extract a dataframe from html files in data_path
 
     Args:
@@ -24,7 +24,8 @@ def extract(data_path):
             7. steps (json)
     """
     print('extract')
-    df = pd.DataFrame(columns=['title',
+    df = pd.DataFrame(columns=['date_crawled',
+                               'title',
                                'date_published',
                                'date_modified',
                                'n_views',
@@ -33,12 +34,14 @@ def extract(data_path):
                                'description',
                                'steps'])
     index = 0
+    data_path = os.path.join(abs_path, dir_name)
     for file in os.listdir(data_path):
         with open(os.path.join(data_path, file), 'r') as f:
             page_content = f.read()
             soup = BeautifulSoup(page_content, 'html.parser')
 
             df.loc[index, 'title'] = soup.title.text
+            df.loc[index, 'description'] = soup.find('div', {'class': 'mf-section-0'}).text
             print(soup.title.text)
             for tag in soup.find_all('div', {'class': 'sp_text'}):
                 if 'Views:' in str(tag):
@@ -54,7 +57,6 @@ def extract(data_path):
                     df.loc[index, 'steps'] = json_obj['step']
                     df.loc[index, 'date_published'] = json_obj['datePublished']
                     df.loc[index, 'date_modified'] = json_obj['dateModified']
-                    df.loc[index, 'description'] = json_obj['description']
                     if 'aggregateRating' in json_obj.keys():
                         df.loc[index, 'n_votes'] = \
                             json_obj['aggregateRating']['ratingCount']
@@ -62,7 +64,7 @@ def extract(data_path):
                             json_obj['aggregateRating']['ratingValue']
 
         index += 1
-
+    df['date_crawled'] = dir_name
     return df
 
 
@@ -130,8 +132,7 @@ def main(project_name, start_date, end_date):
 
     while os.path.exists(os.path.join(data_path,
                                       current_date.strftime('%Y-%m-%d'))):
-        df = extract(os.path.join(data_path,
-                                  current_date.strftime('%Y-%m-%d')))
+        df = extract(data_path, current_date.strftime('%Y-%m-%d'))
         df = transform(df)
         load(df, data_path, current_date.strftime('%Y-%m-%d'))
 
