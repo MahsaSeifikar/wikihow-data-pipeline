@@ -3,6 +3,7 @@
 *.json
 *.sh
 *.html
+*.ipynb_checkpoints
 
 conf_*
 venv/
