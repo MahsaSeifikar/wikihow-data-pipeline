@@ -11,7 +11,8 @@ def extract(abs_path, dir_name):
     """ Extract a dataframe from html files in data_path
 
     Args:
-        data_path: A path to a folder contains raw html files.
+        abs_path: A path to a folder contains raw html files.
+        dir_name: folder name contains raw htlm files
 
     Returns:
         A dataframe with the following columns:
