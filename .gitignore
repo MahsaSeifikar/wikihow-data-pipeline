@@ -4,6 +4,7 @@
 *.sh
 *.html
 *.ipynb_checkpoints
+*.log
 
 conf_*
 venv/

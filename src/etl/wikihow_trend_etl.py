@@ -1,10 +1,14 @@
 import datetime
 import json
+import sys
 import os
 
 import click
 from bs4 import BeautifulSoup
 import pandas as pd
+
+sys.path.append(os.getcwd())
+from utils.setup_logging import logger
 
 
 def extract(abs_path, dir_name):
@@ -24,7 +28,7 @@ def extract(abs_path, dir_name):
             6. main description
             7. steps (json)
     """
-    print('extract')
+
     df = pd.DataFrame(columns=['date_crawled',
                                'title',
                                'date_published',
@@ -43,7 +47,6 @@ def extract(abs_path, dir_name):
 
             df.loc[index, 'title'] = soup.title.text
             df.loc[index, 'description'] = soup.find('div', {'class': 'mf-section-0'}).text
-            print(soup.title.text)
             for tag in soup.find_all('div', {'class': 'sp_text'}):
                 if 'Views:' in str(tag):
                     df.loc[index, 'n_views'] = tag. \
@@ -66,6 +69,7 @@ def extract(abs_path, dir_name):
 
         index += 1
     df['date_crawled'] = dir_name
+    logger.info('All files in this path %s/%s are extracted' % (abs_path, dir_name))
     return df
 
 
@@ -104,11 +108,12 @@ def load(df, data_path, filename):
     Return:
         Nothing!
     """
-    print('load')
+
     data_path = data_path.replace('raw', 'processed')
     if not os.path.exists(data_path):
         os.makedirs(data_path)
     df.to_csv(os.path.join(data_path, filename + '.csv'))
+    logger.info('The dataframe is loaded in this path %s are extracted' % data_path)
 
 
 @click.command()
