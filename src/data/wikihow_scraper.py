@@ -1,10 +1,6 @@
 import datetime
 import os
 import scrapy
-import sys
-
-sys.path.append(os.getcwd())
-from utils.setup_logging import logger
 
 
 class WikiHowSpider(scrapy.Spider):
@@ -15,7 +11,6 @@ class WikiHowSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        logger.info('wikihow.com main page successfully crawled')
         request_list = response.xpath('//div[@id="hp_popular"]/'
                                       'div[@id="hp_popular_container"]/'
                                       'div[@class="hp_thumb "]/'
@@ -35,5 +30,4 @@ class WikiHowSpider(scrapy.Spider):
         if not os.path.exists(path):
             os.makedirs(path)
         with open(os.path.join(path, title), 'wb') as f:
-            logger.info('%s crawled' % title)
             f.write(response.body)

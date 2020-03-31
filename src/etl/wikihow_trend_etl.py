@@ -1,14 +1,14 @@
 import datetime
 import json
-import sys
 import os
 
 import click
 from bs4 import BeautifulSoup
 import pandas as pd
 
-sys.path.append(os.getcwd())
 from utils.setup_logging import logger
+
+print(os.getcwd())
 
 
 def extract(abs_path, dir_name):
@@ -121,10 +121,12 @@ def load(df, data_path, filename):
 @click.option("--start_date", default='2020-03-23')
 @click.option("--end_date", default='2020-03026')
 def main(project_name, start_date, end_date):
-    data_path = os.path.join(*['data',
+    abs_path = os.path.dirname(os.path.dirname(os.getcwd()))
+    data_path = os.path.join(*[abs_path,
+                               'data',
                                'raw',
                                project_name])
-    with open('config/conf_%s' % project_name, 'r') as f:
+    with open(abs_path + '/config/conf_%s' % project_name, 'r') as f:
         file_names = f.read().split()
 
     # if file_names is empty run etl from the first available date!
@@ -143,7 +145,7 @@ def main(project_name, start_date, end_date):
         load(df, data_path, current_date.strftime('%Y-%m-%d'))
 
         # Save the current day as a processed day.
-        with open('config/conf_%s' % project_name, 'a') as f:
+        with open(abs_path+'/config/conf_%s' % project_name, 'a') as f:
             f.write(current_date.strftime('%Y-%m-%d'))
             f.write('\n')
 
