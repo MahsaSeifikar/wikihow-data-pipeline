@@ -14,7 +14,7 @@ The most important parts of this pipeline are as follows:
  `scrapy runspider src/data/wikihow_scraper.py
 `
 ## ETL
-In order to prepare a structured dataset for data scientists, we run `wikihow_trend_etls.py` which convert all html file in a specific day to CSV file. Each processed CSV file contains the following columns:
+In order to prepare a structured dataset for data scientists, we run `wikihow_trend_etls.py` which convert all html files in a specific day to CSV file. Each processed CSV file contains the following columns:
 1. title
 2. last update date
 3. date of publishing
