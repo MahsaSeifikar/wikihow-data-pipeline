@@ -22,11 +22,13 @@ def extract(abs_path, dir_name):
         A dataframe with the following columns:
             1. title
             2. last update date
-            3. number of views
-            4. number of votes
-            5. mean votes
-            6. main description
-            7. steps (json)
+            3. date of publishing
+            4. date of crawling
+            5. number of views
+            6. number of votes
+            7. mean votes
+            8. main description
+            9. steps (json)
     """
 
     df = pd.DataFrame(columns=['date_crawled',
