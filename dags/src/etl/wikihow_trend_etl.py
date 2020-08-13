@@ -6,7 +6,7 @@ import click
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from utils.setup_logging import logger
+from src.utils.setup_logging import logger
 
 
 def extract(abs_path, dir_name):
@@ -116,16 +116,19 @@ def load(df, data_path, filename):
     logger.info('The dataframe is loaded in this path %s are extracted' % data_path)
 
 
-@click.command()
-@click.option("--project_name", default='trend')
-def main(project_name):
-    abs_path = os.path.dirname(os.path.dirname(os.getcwd()))
+# @click.command()
+# @click.option("--project_name", default='trend')
+def run_etl(project_name, **kwargs):
+    abs_path = '/wikihow_data_pipline'
     data_path = os.path.join(*[abs_path,
                                'data',
                                'raw',
-                               project_name])
-    with open(abs_path + '/config/conf_%s' % project_name, 'r') as f:
-        processed_dir_list = f.read().split()
+                               'trend'])
+    try:
+        with open(abs_path + '/dags/src/config/conf_%s' % project_name, 'r') as f:
+            processed_dir_list = f.read().split()
+    except:
+        processed_dir_list = []
     # Sort path based on modification date and remove the dir that already processed
     current_paths = sorted(Path(data_path).iterdir(), key=os.path.getmtime)
     current_paths = [str(path).split('/')[-1] for path in current_paths]
@@ -141,6 +144,3 @@ def main(project_name):
             f.write(filename)
             f.write('\n')
 
-
-if __name__ == '__main__':
-    main()
