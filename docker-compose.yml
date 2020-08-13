@@ -1,0 +1,11 @@
+version: "3"
+
+services: 
+
+    notebook:
+        build:
+            context: .
+            dockerfile: ./dockerfiles/notebook/Dockerfile
+        ports: 
+            - "8888:8888"
+        command: sh /notebook_run.sh

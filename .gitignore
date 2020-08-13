@@ -1,7 +1,6 @@
 *.pyc
 *.csv
 *.json
-*.sh
 *.html
 *.ipynb_checkpoints
 *.log
