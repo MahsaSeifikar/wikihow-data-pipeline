@@ -1,7 +1,7 @@
 from datetime import datetime
-
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
+
 
 
 args = {
@@ -11,19 +11,20 @@ args = {
 }
 
 dag = DAG(
-    dag_id='wikihow_hello_world',
+    dag_id='wikihow_trend_crawler',
     schedule_interval='@daily',
     default_args=args,
     max_active_runs=1
 )
 
-hello_world = BashOperator(
-    task_id = 'wikihow_hello_world',
-    bash_command = "echo Hello World!",
+crawler = BashOperator(
+    task_id = 'crawler',
+    bash_command = "scrapy runspider /wikihow_data_pipeline/dags/crawler/wikihow_scraper.py",
     dag = dag
 )
 
-hello_world 
+
+crawler 
 
 
 

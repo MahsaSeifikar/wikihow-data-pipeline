@@ -15,8 +15,13 @@ RUN pip3 install --no-cache-dir -r /requirements.txt
 RUN apt-get update && \
     apt-get -y install sudo
 
+# install apache-airflow
+RUN pip3 install apache-airflow
+
 
 RUN mkdir -p /wikihow_data_pipeline/dags
+RUN mkdir -p /wikihow_data_pipeline/data
+
 WORKDIR /wikihow_data_pipeline
 COPY ./dags ./dags
 
@@ -24,5 +29,3 @@ COPY dockerfiles/airflow/airflow.cfg /wikihow_data_pipeline/airflow.cfg
 COPY dockerfiles/airflow/airflow_run.sh /airflow_run.sh
 RUN chmod 777 /airflow_run.sh
 
-# install apache-airflow
-RUN pip3 install apache-airflow

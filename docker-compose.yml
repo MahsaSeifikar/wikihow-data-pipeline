@@ -18,6 +18,7 @@ services:
             - AIRFLOW_HOME=/wikihow_data_pipeline
         volumes: 
             - ./dags:/wikihow_data_pipeline/dags
+            - ./data:/wikihow_data_pipeline/data
         ports:
             - "8000:8000"
         command: sh /airflow_run.sh
