@@ -4,6 +4,7 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 
 
+
 args = {
     'start_date': datetime(year=2020, month=7, day=10,
                          hour=0, minute=0, second=0),

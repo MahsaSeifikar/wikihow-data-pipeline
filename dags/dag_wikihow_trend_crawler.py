@@ -1,7 +1,9 @@
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
+from airflow.operators.python_operator import PythonOperator
 
+from src.crawler.wikihow_scraper import run_crawler
 
 
 args = {
@@ -17,13 +19,13 @@ dag = DAG(
     max_active_runs=1
 )
 
-crawler = BashOperator(
-    task_id = 'crawler_trend_posts',
-    bash_command = "scrapy runspider /wikihow_data_pipeline/dags/src/crawler/wikihow_scraper.py",
-    dag = dag
+crawler = PythonOperator(
+    task_id='crawler_trend_posts',
+    python_callable=run_crawler,
+    dag=dag
 )
 
-
+# Dag
 crawler 
 
 

@@ -1,3 +1,4 @@
+import logging
 import json
 import os
 import pandas as pd
@@ -5,7 +6,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from bs4 import BeautifulSoup
 
-from src.utils.setup_logging import logger
+from src.utils.setup_logging import get_costum_logger
+
+logger = get_costum_logger(logging.getLogger(__name__))
 
 
 def extract(raw_data_path):

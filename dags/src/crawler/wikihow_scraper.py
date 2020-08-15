@@ -1,7 +1,12 @@
+import logging
 import datetime
 import os
 import scrapy
+from scrapy.crawler import CrawlerProcess
 
+from src.utils.setup_logging import get_costum_logger
+
+logger = get_costum_logger(logging.getLogger(__name__))
 
 class WikiHowSpider(scrapy.Spider):
     name = 'wikihow_trend_detection'
@@ -30,3 +35,11 @@ class WikiHowSpider(scrapy.Spider):
             os.makedirs(path)
         with open(os.path.join(path, title), 'wb') as f:
             f.write(response.body)
+            logger.info(f'{title} page is already crawled!')
+
+
+
+def run_crawler(**kwargs):
+    process = CrawlerProcess()
+    process.crawl(WikiHowSpider)
+    process.start() 

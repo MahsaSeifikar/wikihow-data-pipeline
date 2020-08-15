@@ -5,7 +5,8 @@ from src.etl.wikihow_trend_etl import run_etl
 
 
 def get_yesterday_date():
-    return (datetime.now()-timedelta(days=1)).strftime("%Y-%m-%d")
+    return datetime.now().strftime("%Y-%m-%d")
+    # return (datetime.now()-timedelta(days=1)).strftime("%Y-%m-%d")
 
 
 args = {
