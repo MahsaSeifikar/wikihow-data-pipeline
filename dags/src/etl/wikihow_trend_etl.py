@@ -1,20 +1,18 @@
 import json
 import os
-from pathlib import Path
-
-import click
-from bs4 import BeautifulSoup
 import pandas as pd
+from datetime import datetime, timedelta
+from pathlib import Path
+from bs4 import BeautifulSoup
 
 from src.utils.setup_logging import logger
 
 
-def extract(abs_path, dir_name):
+def extract(raw_data_path):
     """ Extract a dataframe from html files in data_path
 
     Args:
-        abs_path: A path to a folder contains raw html files.
-        dir_name: folder name contains raw htlm files
+        raw_data_path: A path to a folder contains raw html files.
 
     Returns:
         A dataframe with the following columns:
@@ -39,9 +37,8 @@ def extract(abs_path, dir_name):
                                'description',
                                'steps'])
     index = 0
-    data_path = os.path.join(abs_path, dir_name)
-    for file in os.listdir(data_path):
-        with open(os.path.join(data_path, file), 'r') as f:
+    for file in os.listdir(raw_data_path):
+        with open(os.path.join(raw_data_path, file), 'r') as f:
             page_content = f.read()
             soup = BeautifulSoup(page_content, 'html.parser')
 
@@ -68,8 +65,8 @@ def extract(abs_path, dir_name):
                             json_obj['aggregateRating']['ratingValue']
 
         index += 1
-    df['date_crawled'] = dir_name
-    logger.info('All files in this path %s/%s are extracted' % (abs_path, dir_name))
+    df['date_crawled'] = raw_data_path.split('/')[-1]
+    logger.info(f'All files in this path {raw_data_path} are extracted ')
     return df
 
 
@@ -98,49 +95,26 @@ def transform(df):
     return df
 
 
-def load(df, data_path, filename):
+def load(df, processed_data_path):
     """ Save dataframe to a csv file in processed folder
 
     Args:
         df: a clean dataframe.
-        data_path: path to raw folder.
-        filename: A string that is a date for saving data.
+        processed_data_path: path to processed folder.
     Return:
         Nothing!
     """
 
-    data_path = data_path.replace('raw', 'processed')
-    if not os.path.exists(data_path):
-        os.makedirs(data_path)
-    df.to_csv(os.path.join(data_path, filename + '.csv'))
-    logger.info('The dataframe is loaded in this path %s are extracted' % data_path)
+    if not os.path.exists(processed_data_path):
+        os.makedirs(processed_data_path)
+    df.to_csv(os.path.join(processed_data_path, 'wikihow_trends.csv'))
+    logger.info(f'The dataframe is loaded in this' 
+                f'path {processed_data_path} are extracted')
 
 
-# @click.command()
-# @click.option("--project_name", default='trend')
-def run_etl(project_name, **kwargs):
-    abs_path = '/wikihow_data_pipline'
-    data_path = os.path.join(*[abs_path,
-                               'data',
-                               'raw',
-                               'trend'])
-    try:
-        with open(abs_path + '/dags/src/config/conf_%s' % project_name, 'r') as f:
-            processed_dir_list = f.read().split()
-    except:
-        processed_dir_list = []
-    # Sort path based on modification date and remove the dir that already processed
-    current_paths = sorted(Path(data_path).iterdir(), key=os.path.getmtime)
-    current_paths = [str(path).split('/')[-1] for path in current_paths]
-    current_dir_list = set(current_paths) - set(processed_dir_list)
-
-    for filename in current_dir_list:
-        df = extract(data_path, filename)
-        df = transform(df)
-        load(df, data_path, filename)
-
-        # Save the current day as a processed day.
-        with open(abs_path + '/config/conf_%s' % project_name, 'a') as f:
-            f.write(filename)
-            f.write('\n')
+def run_etl(raw_data_path, processed_data_path, **kwargs):
+    
+    df = extract(raw_data_path)
+    df = transform(df)
+    load(df, processed_data_path)
 
