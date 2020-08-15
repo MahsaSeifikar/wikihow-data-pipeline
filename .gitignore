@@ -3,7 +3,7 @@
 *.json
 *.html
 *.ipynb_checkpoints
-*.log
+
 
 conf_*
 venv/
@@ -13,5 +13,4 @@ env/
 .idea/
 htmlcov/
 .coverage
-data/
 __pycache__/
