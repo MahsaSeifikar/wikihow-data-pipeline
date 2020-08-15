@@ -11,7 +11,7 @@ venv/
 env/
 .cache/
 .idea/
-data/raw/
+data/raw
 data/processed
 htmlcov/
 .coverage
