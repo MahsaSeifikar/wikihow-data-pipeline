@@ -1,8 +1,0 @@
-pandas
-click
-scrapy
-pytest
-beautifulsoup4
-matplotlib
-scikit-learn
-wordcloud
