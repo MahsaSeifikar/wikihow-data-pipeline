@@ -11,6 +11,8 @@ venv/
 env/
 .cache/
 .idea/
+data/raw/
+data/processed
 htmlcov/
 .coverage
 __pycache__/
