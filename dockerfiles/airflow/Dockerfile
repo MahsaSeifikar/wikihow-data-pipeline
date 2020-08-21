@@ -20,7 +20,9 @@ RUN pip3 install apache-airflow
 
 
 RUN mkdir -p /wikihow_data_pipeline/dags
-RUN mkdir -p /wikihow_data_pipeline/data
+RUN mkdir -p /wikihow_data_pipeline/data/log
+CMD touch /wikihow_data_pipeline/data/log/logging.log
+RUN chmod 777 /wikihow_data_pipeline/data
 
 WORKDIR /wikihow_data_pipeline
 COPY ./dags ./dags

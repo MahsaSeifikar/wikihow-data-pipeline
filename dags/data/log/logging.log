@@ -1,0 +1,19 @@
+2020-08-15 13:41:30,294 - INFO - src.crawler.wikihow_scraper 3 Simple Ways to Determine if an Information Source Is Reliable (COVID 19) page is already crawled!
+2020-08-15 13:41:31,200 - INFO - src.crawler.wikihow_scraper How to Make Ube Halaya (with Pictures) - wikiHow page is already crawled!
+2020-08-15 13:41:31,251 - INFO - src.crawler.wikihow_scraper 3 Ways to Grill Fish - wikiHow page is already crawled!
+2020-08-15 13:41:31,280 - INFO - src.crawler.wikihow_scraper 3 Ways to Cook Lamb Steaks - wikiHow page is already crawled!
+2020-08-15 13:41:31,345 - INFO - src.crawler.wikihow_scraper 4 Ways to Prevent Cardio from Burning Muscle - wikiHow page is already crawled!
+2020-08-15 13:41:31,439 - INFO - src.crawler.wikihow_scraper 4 Ways to Cook Aubergine - wikiHow page is already crawled!
+2020-08-15 13:41:31,481 - INFO - src.crawler.wikihow_scraper How to Verify Your YouTube Account: 10 Steps (with Pictures) page is already crawled!
+2020-08-15 13:41:31,577 - INFO - src.crawler.wikihow_scraper How to Grill Flank Steak: 15 Steps (with Pictures) - wikiHow page is already crawled!
+2020-08-15 13:44:08,154 - INFO - src.etl.wikihow_trend_etl All files in this path /wikihow_data_pipeline/data/raw/wikihow_trend/2020-08-15 are extracted 
+2020-08-15 13:44:08,168 - INFO - src.etl.wikihow_trend_etl The dataframe is loaded in thispath /wikihow_data_pipeline/data/processed/wikihow_trend/2020-08-15 are extracted
+2020-08-21 07:55:56,640 - INFO - src.crawler.wikihow_scraper How to Know when Your Power Will Go Out in California Rolling Blackouts page is already crawled!
+2020-08-21 07:55:57,202 - INFO - src.crawler.wikihow_scraper Simple Ways to Know if You Are in Ketosis: 9 Steps (with Pictures) page is already crawled!
+2020-08-21 07:55:57,219 - INFO - src.crawler.wikihow_scraper Simple Ways to Find Good Exercises for Your Kids to Do Online page is already crawled!
+2020-08-21 07:55:57,304 - INFO - src.crawler.wikihow_scraper How to Marinate Pork: 13 Steps (with Pictures) - wikiHow page is already crawled!
+2020-08-21 07:55:57,328 - INFO - src.crawler.wikihow_scraper 3 Simple Ways to Pass a Coding Interview - wikiHow page is already crawled!
+2020-08-21 07:55:57,351 - INFO - src.crawler.wikihow_scraper 3 Ways to Grill Zucchini - wikiHow page is already crawled!
+2020-08-21 07:55:57,890 - INFO - src.crawler.wikihow_scraper 3 Simple Ways to Cope with the Stress of Homeschooling (for Parents) page is already crawled!
+2020-08-21 07:56:12,316 - INFO - src.etl.wikihow_trend_etl All files in this path /wikihow_data_pipeline/data/raw/wikihow_trend/2020-08-21 are extracted 
+2020-08-21 07:56:12,333 - INFO - src.etl.wikihow_trend_etl The dataframe is loaded in thispath /wikihow_data_pipeline/data/processed/wikihow_trend/2020-08-21 are extracted

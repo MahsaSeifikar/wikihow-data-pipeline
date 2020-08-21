@@ -8,6 +8,8 @@ services:
             dockerfile: ./dockerfiles/notebook/Dockerfile
         ports: 
             - "8888:8888"
+        volumes:
+            - static-content:/wikihow_data_pipeline/data
         command: sh /notebook_run.sh
     
     airflow:
@@ -18,7 +20,10 @@ services:
             - AIRFLOW_HOME=/wikihow_data_pipeline
         volumes: 
             - ./dags:/wikihow_data_pipeline/dags
-            - ./data:/wikihow_data_pipeline/data
+            - ./data/log:/wikihow_data_pipeline/data/log
+            - ./data/raw:/wikihow_data_pipeline/data/raw
+            - ./data/processed:/wikihow_data_pipeline/data/processed
+            - static-content:/wikihow_data_pipeline/data
         ports:
             - "8000:8000"
         command: sh /airflow_run.sh
@@ -38,3 +43,4 @@ services:
     
 volumes:
     database-data:
+    static-content:
